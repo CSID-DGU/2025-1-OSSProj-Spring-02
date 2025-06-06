@@ -81,7 +81,7 @@ export default function VotePostDetailPage() {
         <div className="flex items-center gap-3 py-2 mb-3">
           <IoArrowBackCircle
             className="w-6 h-6 text-[#FFD70D] cursor-pointer"
-            onClick={() => router.push('/community/vote')}
+            onClick={() => router.push('/community/free')}
           />
           <span className="font-bold">투표게시판</span>
         </div>
