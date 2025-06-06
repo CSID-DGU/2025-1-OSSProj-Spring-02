@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Script from 'next/script';
 import Header from '@/components/Header';
 import SectionTitle from '@/components/SectionTitle';
@@ -22,18 +22,19 @@ type Store = {
 
 export default function MapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const infoWindowRef = useRef<any>(null);
+
   const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState<any>(null);
   const [keyword, setKeyword] = useState('');
   const [currentPosition, setCurrentPosition] = useState<{ lat: number; lng: number } | null>(null);
-  const [category, setCategory] = useState<string>('');
+  const [category, setCategory] = useState('');
   const [markers, setMarkers] = useState<any[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
-  const infoWindowRef = useRef<any>(null);
 
   // 1️⃣ 서버에서 착한가게 전체 데이터 받아오기
   useEffect(() => {
-    fetch('http://localhost:8080/stores')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stores`)
       .then(res => res.json())
       .then(setStores)
       .catch(() => setStores([]));
@@ -73,6 +74,11 @@ export default function MapPage() {
       if (infoWindowRef.current) infoWindowRef.current.close();
     });
   }, [map]);
+
+  // ✅ 마커 모두 삭제 (useCallback으로 정의)
+  const clearMarkers = () => {
+    markers.forEach((m: any) => m.setMap(null));
+  }
 
   // 4️⃣ 착한가게 마커 표시 (카테고리 필터 적용)
   useEffect(() => {
@@ -118,14 +124,13 @@ export default function MapPage() {
       map,
       position: myPos,
       image: new window.kakao.maps.MarkerImage(
-        '/icon/my_location.png', // public/icon/my_location.png에 위치
+        '/icon/my_location.png',
         new window.kakao.maps.Size(32, 32)
       ),
       zIndex: 10,
     });
 
-    // cleanup
-    return () => marker.setMap(null);
+    return () => marker.setMap(null); // cleanup
   }, [map, currentPosition]);
 
   // 6️⃣ 키워드 검색 (카카오 플레이스 검색)
@@ -167,13 +172,6 @@ export default function MapPage() {
     });
   };
 
-  // 마커 모두 삭제
-  const clearMarkers = () => {
-    markers.forEach((m: any) => m.setMap(null));
-    setMarkers([]);
-  };
-
-  // 마커 아이콘(노란색)
   const getMarkerImage = () => {
     return new window.kakao.maps.MarkerImage(
       '/icon/default_marker_yellow.png',
@@ -185,7 +183,6 @@ export default function MapPage() {
     setCategory(cat === category ? '' : cat);
   };
 
-  // 내 위치로 이동
   const moveToCurrentLocation = () => {
     if (map && currentPosition) {
       const pos = new window.kakao.maps.LatLng(currentPosition.lat, currentPosition.lng);

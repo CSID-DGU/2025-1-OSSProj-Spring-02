@@ -44,8 +44,8 @@ const CameraScreen: React.FC = () => {
     const currentVideo = videoRef.current;
 
     return () => {
-      if (videoRef.current?.srcObject) {
-        const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+      if (currentVideo?.srcObject) {
+        const tracks = (currentVideo.srcObject as MediaStream).getTracks();
         tracks.forEach(track => track.stop());
       }
     };
@@ -80,7 +80,7 @@ const CameraScreen: React.FC = () => {
     formData.append('content', '캡처한 이미지');
 
     try {
-      const response = await fetch('http://localhost:8080/api/receipt/process', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/receipt/process`, {
         method: 'POST',
         body: formData,
       });

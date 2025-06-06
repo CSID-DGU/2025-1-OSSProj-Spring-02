@@ -15,7 +15,7 @@ export default function MyPage() {
   // 닉네임 요청
   useEffect(() => {
     // (예시) /api/my/nickname 엔드포인트에서 닉네임을 가져온다고 가정
-    fetch('http://localhost:8080/api/my/nickname', {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/my/nickname`, {
       method: 'GET',
       // credentials, headers 등 실제 인증 필요 시 추가
     })

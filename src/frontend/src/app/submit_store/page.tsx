@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react' // Suspense 추가
 import { useRouter } from 'next/navigation'
 import PointModal from '@/components/modals/PointModal'
 import Header from '@/components/Header'
@@ -8,8 +8,8 @@ import BottomTab from '@/components/BottomTab'
 import { useSearchParams } from 'next/navigation';
 
 
-
-export default function VerifyPage() {
+// 기존 VerifyPage 내용을 ClientVerifyPageContent 함수로 이동
+function ClientVerifyPageContent() {
   const router = useRouter()
   const [category, setCategory] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -31,15 +31,15 @@ export default function VerifyPage() {
 
   const payload = {
     businessNumber, // 사업자 번호
-    storeName,    // 가게 이름
-    category,     // 업종
-    reason,       // 돈쭐 이유
-    review        // 소비 후기
+    storeName,      // 가게 이름
+    category,       // 업종
+    reason,         // 돈쭐 이유
+    review          // 소비 후기
   };
   console.log('payload:', payload);
 
   try {
-    const res = await fetch('http://localhost:8080/proposals', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/proposals`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -128,9 +128,13 @@ export default function VerifyPage() {
 
             {/* 돈쭐 이유 */}
             <div>
-              <p className="border-l-4 border-yellow-400 pl-2 text-gray-800 font-bold text-base">
+              <span className="border-l-4 border-yellow-400 pl-2 text-gray-800 font-bold text-base">
                 돈쭐 내줘야 하는 이유를 알려주세요
-              </p>
+                <span className="font-bold block w-full pl-2.5">
+                      (가게 선행사례)
+                </span>
+              </span>
+
               <textarea
                 placeholder="사장님의 어떤 선행이 기억에 남았나요?"
                 maxLength={500}
@@ -152,7 +156,7 @@ export default function VerifyPage() {
                 onChange={(e) => setReview(e.target.value)}
               />
             </div>
-             {/* 하단 버튼 */}
+               {/* 하단 버튼 */}
             <div className="mt-15">
               <button
                 onClick={handleSubmit}
@@ -163,15 +167,14 @@ export default function VerifyPage() {
           </button>
           </div>
           </div> {/* ✅ 입력폼 전체 div 닫음 */}
-        </div> {/* ✅ 바깥 카드 div 닫음 (기존 누락됐던 부분) */}
+        </div> {/* ✅ 바깥 카드 div 닫음 */}
 
-       
 
         <BottomTab />
 
         {/* 모달 */}
         <PointModal
-          isOpen={isModalOpen} 
+          isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
             router.push('/main');
@@ -179,4 +182,13 @@ export default function VerifyPage() {
       </main>
     </>
   )
+}
+
+// Suspense로 감싸서 export default
+export default function VerifyPage() {
+    return (
+        <Suspense fallback={<div>페이지를 로딩 중입니다...</div>}> {/* 로딩 중 표시될 내용 */}
+            <ClientVerifyPageContent />
+        </Suspense>
+    )
 }

@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault(); // submit 기본 동작(페이지 리로드) 막기
 
     try {
-      const res = await fetch('http://localhost:8080/users/login', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

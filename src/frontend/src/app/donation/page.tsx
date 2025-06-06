@@ -28,7 +28,7 @@ export default function DonationPage() {
   }, [stage]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/users/1/points')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/1/points`)
       .then(res => res.json())
       .then(data => {
         const pt = data.points;
@@ -89,7 +89,7 @@ export default function DonationPage() {
 
     const delta = 10;
     try {
-      const res = await fetch('http://localhost:8080/users/1/points', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/1/points`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ delta }),

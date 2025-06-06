@@ -11,15 +11,13 @@ services:
       - ocr
     networks:
       - donjjul_net
-    volumes:
-      - ./src/backend:/app  # <== 코드 실시간 반영
     environment:
       SPRING_PROFILES_ACTIVE: docker
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: donjjul
       DB_USERNAME: root
-      DB_PASSWORD: goodpassword
+      DB_PASSWORD: sqlbysean0226
 
   ocr:
     build: ./src/ocr-server
@@ -37,10 +35,11 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: goodpassword
+      MYSQL_ROOT_PASSWORD: sqlbysean0226
       MYSQL_DATABASE: donjjul
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./db/donjjul.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - donjjul_net
 

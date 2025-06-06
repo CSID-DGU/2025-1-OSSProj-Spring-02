@@ -1,8 +1,6 @@
 'use client';
 import React from "react";
 import { useRouter } from 'next/navigation';
-import Container from '@/components/Container';
-import CardWrapper from "@/components/CardWrapper";
 
 
 export default function HomePage() {

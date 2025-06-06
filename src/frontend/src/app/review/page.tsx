@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react' // Suspense 추가
 import Image from 'next/image'
 import { useRouter, useSearchParams} from 'next/navigation'
 import { FaStar } from 'react-icons/fa'
@@ -18,7 +18,8 @@ interface Store {
   // ...필요 필드
 }
 
-export default function WriteReviewPage() {
+// 기존 WriteReviewPage 내용을 새 컴포넌트로 이동
+function ClientReviewPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams();
   const businessNumber = searchParams.get('bno');
@@ -28,11 +29,11 @@ export default function WriteReviewPage() {
   const [hoverRating, setHoverRating] = useState(0)
   const [review, setReview] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  
+
   // 사업자번호로 가게정보 패칭
   useEffect(() => {
     if (!businessNumber) return;
-    fetch(`http://localhost:8080/stores/${businessNumber}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stores/${businessNumber}`)
       .then(res => res.ok ? res.json() : Promise.reject('가게 정보 없음'))
       .then(data => {
         setStore(data);
@@ -54,7 +55,7 @@ export default function WriteReviewPage() {
     const payload = { userId, storeId, rating, content: review };
 
     try {
-      const res = await fetch('http://localhost:8080/api/reviews', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -107,7 +108,7 @@ export default function WriteReviewPage() {
               <p className="text-left text-sm text-gray-600">{store.address}</p>
               <p className="text-left text-sm text-gray-600">{store.description}</p>
               <div className="flex justify-between text-sm text-gray-600">
-                <p>전화번호 : 1588-8069</p>
+                <p>전화번호 : 031-426-4790</p>
                 <p className="text-blue-500">⭐ 4.5</p>
               </div>
             </div>
@@ -167,7 +168,7 @@ export default function WriteReviewPage() {
           </div>
         </div>
       </main>
-      
+
       {/* ✅ 하단탭 */}
       <BottomTab />
 
@@ -178,4 +179,13 @@ export default function WriteReviewPage() {
         }} />
     </>
   )
+}
+
+// Suspense로 감싸서 export
+export default function WriteReviewPage() {
+    return (
+        <Suspense fallback={<div>페이지를 로딩 중입니다...</div>}> {/* fallback은 로딩 중 표시될 내용 */}
+            <ClientReviewPageContent />
+        </Suspense>
+    )
 }

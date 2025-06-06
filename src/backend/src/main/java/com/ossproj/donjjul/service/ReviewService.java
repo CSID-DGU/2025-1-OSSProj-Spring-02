@@ -54,4 +54,20 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+        @Transactional(readOnly = true)
+        public List<ReviewResponse> getReviewsByStoreId(Long storeId) {
+                return reviewRepo.findByStore_Id(storeId)
+                        .stream()
+                        .map(r -> new ReviewResponse(
+                                r.getId(),
+                                r.getUser().getId(),
+                                r.getStore().getId(),
+                                r.getRating(),
+                                r.getContent(),
+                                r.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+        }
+
+
 }

@@ -16,4 +16,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     // ✅ 카테고리 필터용 메서드 (지도 마커 조회용)
     List<Store> findByCategory(String category);
+
+    // ID가 1~6 사이인 가게들만 조회
+    List<Store> findByIdBetween(Long start, Long end);
 }

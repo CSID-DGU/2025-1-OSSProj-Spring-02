@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ossproj.donjjul.domain.User;
+import com.ossproj.donjjul.domain.Review;
 
 import java.util.List;
 
@@ -36,5 +37,11 @@ public class ReviewController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<ReviewResponse>> getByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(reviewService.getReviewsByUserId(userId));
+    }
+
+    @GetMapping("/store/{storeId}")
+    public ResponseEntity<List<ReviewResponse>> getReviewsByStoreId(@PathVariable Long storeId) {
+        List<ReviewResponse> reviews = reviewService.getReviewsByStoreId(storeId);
+        return ResponseEntity.ok(reviews);
     }
 }

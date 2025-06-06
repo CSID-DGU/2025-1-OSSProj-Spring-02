@@ -113,6 +113,7 @@ function CommunityEmpty() {
   return (
     <div className="py-16 text-center bg-[#F8F8F8]">
       <img src ='/햄스터_흑백.png' 
+      alt="검색 결과가 없을 때 보여주는 흑백 햄스터"
       className='flex w-32 block mx-auto mb-4'>
         </img>
       <p className='font-bold'>앗, 해당 검색어에 맞는 게시글이 아직 없어요!</p>

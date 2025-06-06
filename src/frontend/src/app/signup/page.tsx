@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Container from '@/components/Container';
-import CardWrapper from '@/components/CardWrapper';
 import { useRouter } from 'next/navigation';
 
 
@@ -25,7 +23,7 @@ export default function SignUpPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/users', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

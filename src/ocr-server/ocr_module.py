@@ -4,7 +4,10 @@ from PIL import Image
 import pytesseract
 import re
 import datetime
-pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
+import platform
+
+if platform.system() == "Windows":
+    pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
 
 def extract_business_info(image_stream):
     img = Image.open(image_stream)
