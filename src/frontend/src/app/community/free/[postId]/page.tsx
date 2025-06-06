@@ -17,11 +17,12 @@ interface Comment {
   avatarUrl: string
 }
 
-interface FreePostDetail {
+interface VotePostDetail {
   id: number
   nickname: string
   title: string
   excerpt: string
+  thumbnails: string[]
   date: string
   likes: number
   dislikes: number
@@ -31,23 +32,24 @@ interface FreePostDetail {
 
 // 더미 댓글 데이터
 const dummyComments: Comment[] = [
-  { id: 1, author: '여름이야', text: 'ㅠㅠ', date: '1시간 전', avatarUrl: '/햄스터_깜짝.jpg' },
-  { id: 2, author: '초여름', text: '화이팅 !! ', date: '2시간 전', avatarUrl: '/애기햄스터.png' },
+  { id: 1, author: '여름이야', text: '정말 맛있었어요! 추천 고고!', date: '1시간 전', avatarUrl: '/햄스터_깜짝.jpg' },
+  { id: 2, author: '초여름', text: '소보로 진짜 최고입니다 👍', date: '2시간 전', avatarUrl: '/애기햄스터.png' },
 ]
 
-export default function FreePostDetailPage() {
+export default function VotePostDetailPage() {
   const { postId } = useParams()
   const router = useRouter()
-  const [post, setPost] = useState<FreePostDetail | null>(null)
+  const [post, setPost] = useState<VotePostDetail | null>(null)
   const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
     setPost({
       id: Number(postId),
-      nickname: '불닭조아',
-      title: '시험은 왜 존재하는가',
+      nickname: '소금빵장인',
+      title: '선행하는 빵 맛집 발견했어요~!',
       excerpt:
-        '으아악 저는 시험기간이 너무 싫습니다 여러분도 시험기간이 싫으시죠? 혹시 시험이 언제 끝나시나요 너무너무 싫당 진짜 ...',
+        '이번에 저희 동네에 새로 생긴 빵집이 있는데, 어찌나 빵이 쫀득하구 맛있던지 저희 가족들이 정말 단골이 되리라 했어요 근데 사장님께서 매달 고아원과 요양원에 빵들을 기부하시는 분이셨더라구요~!! 그것두 손수 예쁘게 포장하셔서 기부하시는 모습에 정말 감동받은 거 있죠? 이번 돈쭐 가게 후보로 추천합니다~^^',
+      thumbnails: ['/성심당3.jpg', '/성심당2.jpg', '/성심당.jpg'],
       date: '2025-04-10',
       likes: 105,
       dislikes: 3,
@@ -81,7 +83,7 @@ export default function FreePostDetailPage() {
             className="w-6 h-6 text-[#FFD70D] cursor-pointer"
             onClick={() => router.push('/community/vote')}
           />
-          <span className="font-bold">자유게시판</span>
+          <span className="font-bold">투표게시판</span>
         </div>
         {/* ★ 작성자 프로필 영역 추가 ★ */}
         <div className="flex items-center space-x-3 mb-4">
@@ -89,7 +91,7 @@ export default function FreePostDetailPage() {
             <div className="w-8 h-8 border border-[#B5B5B5]/70 rounded-full overflow-hidden bg-gray-200">
             <Image
                 // 여기에 실제 작성자 프로필 URL을 넣어주세요.
-                src="/불닭.jpg"
+                src="/소금빵.jpg"
                 alt={post.nickname}
                 width={40}
                 height={40}
@@ -101,6 +103,16 @@ export default function FreePostDetailPage() {
             <span className="text-[14px] font-semibold text-gray-800">{post.nickname}</span>
             <span className="text-xs text-gray-500">{post.date}</span>
             </div>
+        </div>
+
+
+        {/* 썸네일 3장 */}
+        <div className="flex gap-1 mb-4">
+          {post.thumbnails.map((src, i) => (
+            <div key={i} className="relative flex-1 h-24 lg:h-60 rounded-lg overflow-hidden">
+              <Image src={src} alt="" fill className="object-cover" />
+            </div>
+          ))}
         </div>
 
         {/* 제목/메타 */}
