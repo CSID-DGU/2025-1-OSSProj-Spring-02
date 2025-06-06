@@ -172,7 +172,7 @@ export default function DonationPage() {
             </AnimatePresence> */}
             <AnimatePresence mode="wait">
               <motion.img
-                key={action ?? stage}
+                key={action ? `action-${action}` : `stage-${stage}`}
                 src={action ? imageMap[action] : stageImageMap[stage]}
                 alt="hamster"
                 width={90}
