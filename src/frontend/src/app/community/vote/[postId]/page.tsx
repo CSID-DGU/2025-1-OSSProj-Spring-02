@@ -30,7 +30,7 @@ interface VotePostDetail {
   rating: number
 }
 
-// 더미 댓글 데이터 (로컬 테스트용)
+// 더미 댓글 데이터
 const dummyComments: Comment[] = [
   { id: 1, author: '여름이야', text: '정말 맛있었어요! 추천 고고!', date: '1시간 전', avatarUrl: '/햄스터_깜짝.jpg' },
   { id: 2, author: '초여름', text: '소보로 진짜 최고입니다 👍', date: '2시간 전', avatarUrl: '/애기햄스터.png' },
@@ -39,7 +39,6 @@ const dummyComments: Comment[] = [
 export default function VotePostDetailPage() {
   const { postId } = useParams()
   const router = useRouter()
-
   const [post, setPost] = useState<VotePostDetail | null>(null)
   const [newComment, setNewComment] = useState('')
 
@@ -59,30 +58,6 @@ export default function VotePostDetailPage() {
     })
   }, [postId])
 
-  const handleLike = () => {
-    if (!post) return
-    setPost(prev =>
-      prev
-        ? {
-            ...prev,
-            likes: prev.likes + 1,
-          }
-        : prev
-    )
-  }
-
-  const handleDislike = () => {
-    if (!post) return
-    setPost(prev =>
-      prev
-        ? {
-            ...prev,
-            dislikes: prev.dislikes + 1,
-          }
-        : prev
-    )
-  }
-
   const handleSend = () => {
     if (newComment.trim()) {
       dummyComments.push({
@@ -93,14 +68,7 @@ export default function VotePostDetailPage() {
         avatarUrl: '/햄스터_깜짝.jpg',
       })
       setNewComment('')
-      setPost(prev =>
-        prev
-          ? {
-              ...prev,
-              comments: prev.comments + 1,
-            }
-          : prev
-      )
+      setPost((prev) => prev && { ...prev, comments: prev.comments + 1 })
     }
   }
 
@@ -117,93 +85,81 @@ export default function VotePostDetailPage() {
           />
           <span className="font-bold">투표게시판</span>
         </div>
+        {/* ★ 작성자 프로필 영역 추가 ★ */}
         <div className="flex items-center space-x-3 mb-4">
-          <div className="w-8 h-8 border border-[#B5B5B5]/70 rounded-full overflow-hidden bg-gray-200">
+            {/* 아바타 */}
+            <div className="w-8 h-8 border border-[#B5B5B5]/70 rounded-full overflow-hidden bg-gray-200">
             <Image
-              src="/소금빵.jpg"
-              alt={post.nickname}
-              width={40}
-              height={40}
-              className="object-cover"
+                // 여기에 실제 작성자 프로필 URL을 넣어주세요.
+                src="/소금빵.jpg"
+                alt={post.nickname}
+                width={40}
+                height={40}
+                className="object-cover"
             />
-          </div>
-          <div className="flex flex-1 items-center justify-between">
-            <span className="text-[14px] font-semibold text-gray-800">
-              {post.nickname}
-            </span>
+            </div>
+            {/* 닉네임 + 작성일 */}
+            <div className="flex flex-1 items-center justify-between">
+            <span className="text-[14px] font-semibold text-gray-800">{post.nickname}</span>
             <span className="text-xs text-gray-500">{post.date}</span>
-          </div>
+            </div>
         </div>
 
+
+        {/* 썸네일 3장 */}
         <div className="flex gap-1 mb-4">
           {post.thumbnails.map((src, i) => (
-            <div
-              key={i}
-              className="relative flex-1 h-24 lg:h-60 rounded-lg overflow-hidden"
-            >
+            <div key={i} className="relative flex-1 h-24 lg:h-60 rounded-lg overflow-hidden">
               <Image src={src} alt="" fill className="object-cover" />
             </div>
           ))}
         </div>
 
+        {/* 제목/메타 */}
         <div className="flex items-center justify-between mb-2">
-          <h1 className="font-semibold text-[17px] flex-1 line-clamp-2">
-            {post.title}
-          </h1>
+          <h1 className="font-semibold text-[17px] flex-1 line-clamp-2">{post.title}</h1>
         </div>
 
-        <p className="text-gray-700 leading-relaxed text-[13px] mb-6">
-          {post.excerpt}
-        </p>
+        {/* 본문 */}
+        <p className="text-gray-700 leading-relaxed text-[13px] mb-6">{post.excerpt}</p>
 
-        <div className="flex items-center gap-6 text-xs text-gray-500 mb-4">
-          <button
-            onClick={handleLike}
-            className="flex items-center gap-1 hover:text-blue-500"
-          >
+        {/* 좋아요·싫어요·댓글 */}
+        <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+          <span className="flex items-center gap-1">
             <BiLike className="w-4 h-4" /> {post.likes}
-          </button>
-          <button
-            onClick={handleDislike}
-            className="flex items-center gap-1 hover:text-red-500"
-          >
+          </span>
+          <span className="flex items-center gap-1">
             <BiDislike className="w-4 h-4" /> {post.dislikes}
-          </button>
+          </span>
           <span className="flex items-center gap-1">
             <LiaCommentDots className="w-4 h-4" /> {post.comments}
           </span>
         </div>
 
+        {/* 댓글 입력창 */}
         <div className="flex items-center mb-4 border-2 border-gray-200 rounded-full overflow-hidden">
           <input
             type="text"
             placeholder="댓글을 입력해주세요."
             className="flex-1 px-4 py-2 text-sm focus:outline-none"
             value={newComment}
-            onChange={e => setNewComment(e.target.value)}
+            onChange={(e) => setNewComment(e.target.value)}
           />
           <button onClick={handleSend} className="px-4 text-xl text-[#FFD735]">
             <IoSend />
           </button>
         </div>
 
+        {/* 댓글 리스트 */}
         <div className="space-y-3 pb-8">
-          {dummyComments.map(c => (
+          {dummyComments.map((c) => (
             <div key={c.id} className="flex items-start space-x-3">
               <div className="w-8 h-8 border border-[#B5B5B5] rounded-full overflow-hidden bg-gray-200">
-                <Image
-                  src={c.avatarUrl}
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="object-cover"
-                />
+                <Image src={c.avatarUrl} alt="" width={32} height={32} className="object-cover" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-1 text-sm text-gray-500 mb-1">
-                  <span className="font-semibold text-[15px] text-gray-800">
-                    {c.author}
-                  </span>
+                  <span className="font-semibold text-[15px] text-gray-800">{c.author}</span>
                   <span>· {c.date}</span>
                 </div>
                 <p className="text-[13px] text-gray-600">{c.text}</p>
@@ -213,6 +169,7 @@ export default function VotePostDetailPage() {
         </div>
       </main>
 
+      {/* 하단탭: 고정 */}
       <BottomTab />
     </>
   )
