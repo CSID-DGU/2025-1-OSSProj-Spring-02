@@ -33,6 +33,7 @@ const donation = {
 export default function DonationDetailPage() {
   const [showModal, setShowModal] = useState(false);
 
+  
   // 포인트 차감 로직
   const handleDonate = async (amount: number) => {
     const userId = 1; // 실제 로그인된 유저 ID로 교체

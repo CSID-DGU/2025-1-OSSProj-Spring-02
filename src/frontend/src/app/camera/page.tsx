@@ -37,7 +37,7 @@ const CameraScreen: React.FC = () => {
     formData.append('content', '업로드된 이미지');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/receipt/process`, {
+      const response = await fetch(`/api/receipt/process`, {
         method: 'POST',
         body: formData,
       });
@@ -123,7 +123,7 @@ const CameraScreen: React.FC = () => {
     formData.append('content', '캡처한 이미지');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/receipt/process`, {
+      const response = await fetch(`/api/receipt/process`, {
         method: 'POST',
         body: formData,
       });
