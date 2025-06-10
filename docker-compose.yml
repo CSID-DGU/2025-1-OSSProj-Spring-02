@@ -4,7 +4,7 @@ services:
   backend:
     image: 559050249664.dkr.ecr.ap-northeast-2.amazonaws.com/donjjul-backend:latest
     ports:
-      - "80:8080"
+      - "8080:8080"
     networks:
       - donjjul-net
     environment:

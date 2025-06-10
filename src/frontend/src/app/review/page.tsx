@@ -36,7 +36,7 @@ function ReviewPageContent() {
       setLoading(false); // businessNumber가 없으면 로딩 종료
       return;
     }
-    fetch(`/api/stores/${businessNumber}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stores/${businessNumber}`)
       .then(res => res.ok ? res.json() : Promise.reject('가게 정보 없음'))
       .then(data => {
         setStore(data);
@@ -58,7 +58,7 @@ function ReviewPageContent() {
     const payload = { userId, storeId, rating, content: review };
 
     try {
-      const res = await fetch(`/api/reviews`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -87,7 +87,7 @@ function ReviewPageContent() {
           {/* 이미지 + 닫기 */}
           <div className="w-full h-40 rounded-xl overflow-hidden mb-4 relative">
             {store.image ? (
-              <Image src={`/api/images/${store.image}`} alt="가게 이미지" fill unoptimized className="object-cover" />
+              <Image src={`${process.env.NEXT_PUBLIC_API_URL}/images/${store.image}`} alt="가게 이미지" fill unoptimized className="object-cover" />
             ) : (
               <div className="w-full h-full bg-gray-200 flex items-center justify-center">이미지 없음</div>
             )}

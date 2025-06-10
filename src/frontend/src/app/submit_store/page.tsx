@@ -37,7 +37,7 @@ function VerifyPageContent() {
   console.log('payload:', payload);
 
   try {
-    const res = await fetch(`/api/proposals`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/proposals`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

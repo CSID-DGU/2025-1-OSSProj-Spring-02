@@ -8,14 +8,8 @@ publish = ".next"
 
 [build.environment]
 NODE_ENV = "production"
-NEXT_PUBLIC_API_URL = "http://13.125.255.84"
+NEXT_PUBLIC_API_URL = "https://donzzul.store"
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
-
-[[redirects]]
-from = "/api/*"
-to = "http://13.125.255.84:80/:splat"
-status = 200
-force = true
 

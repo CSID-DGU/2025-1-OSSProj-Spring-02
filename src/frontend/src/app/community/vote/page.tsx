@@ -49,7 +49,7 @@ export default function VotePage() {
   ]
   useEffect(() => {
     if (activeTab === 'vote') {
-      fetch(`/api/proposals/user/1`) 
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/proposals/user/1`) 
         .then(res => res.json())
         .then(data => {
           console.log('fetch proposals:', data);

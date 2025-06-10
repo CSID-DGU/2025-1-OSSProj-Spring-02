@@ -36,7 +36,7 @@ export default function DonationDetailPage() {
   // 포인트 차감 로직
   const handleDonate = async (amount: number) => {
     const userId = 1; // 실제 로그인된 유저 ID로 교체
-      const res = await fetch(`/api/users/${userId}/donate`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/donate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount }),

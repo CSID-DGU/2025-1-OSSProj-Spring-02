@@ -68,14 +68,14 @@ export default function Store() {
 
   useEffect(() => {
     if (!id) return
-    fetch(`/api/stores/store/${id}`)  // ✅ 백엔드에서 id 기반 상세정보 요청
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stores/store/${id}`)  // ✅ 백엔드에서 id 기반 상세정보 요청
       .then((res) => res.json())
       .then((data) => setStore(data))
       .catch((err) => console.error('상세정보 요청 실패:', err))
 
 
     // 리뷰 리스트 가져오기
-    fetch(`/api/reviews/store/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/store/${id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log('리뷰 응답: ', data)
@@ -97,7 +97,7 @@ export default function Store() {
         <div className="bg-white rounded-[40px] w-full max-w-md p-4 pb-20 shadow-md relative">
           {/* 이미지 + 닫기 */}
           <div className="w-full h-40 rounded-xl overflow-hidden mb-4 relative">
-            <Image src={`/api/images/${store.image}`} alt={store.name} fill className="object-cover" />
+            <Image src={`${process.env.NEXT_PUBLIC_API_URL}/images/${store.image}`} alt={store.name} fill className="object-cover" />
             <button
               onClick={() => router.back()}
               className="absolute top-2 right-2 bg-black/40 text-white w-8 h-8 rounded-full flex items-center justify-center"

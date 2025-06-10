@@ -20,11 +20,11 @@ export default function NearbySection() {
   const router = useRouter()
 
   useEffect(() => {
-    fetch(`/api/stores/top6`)  // 백엔드 구현 필요
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stores/top6`)  // 백엔드 구현 필요
       .then(res => res.json())
       .then(setNearbyStores)
 
-    fetch(`/api/stores/top12`)      // 백엔드 구현 필요
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stores/top12`)      // 백엔드 구현 필요
       .then(res => res.json())
       .then(setNewStores)
   }, [])
@@ -79,7 +79,7 @@ function StoreCard({ store, router }: { store: Store; router: any }) {
     <div className="flex items-center mb-4">
       <div className="w-[70px] h-[70px] relative rounded-lg overflow-hidden">
         <Image
-          src={`/api/images/${store.image}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/images/${store.image}`}
           alt={store.name}
           fill
           className="object-cover"

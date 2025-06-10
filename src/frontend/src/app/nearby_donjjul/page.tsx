@@ -51,7 +51,7 @@ export default function NearbyDonjjul() {
           <div key={store.id} className="flex items-center mb-4">
             <div className="w-[70px] h-[70px] relative flex-shrink-0 rounded-lg overflow-hidden">
               <Image
-                src={`/api/images/${store.image}`}
+                src={`${process.env.NEXT_PUBLIC_API_URL}/images/${store.image}`}
                 alt={store.name}
                 fill
                 className="object-cover"

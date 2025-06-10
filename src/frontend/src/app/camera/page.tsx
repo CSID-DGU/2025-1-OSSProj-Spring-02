@@ -38,6 +38,7 @@ const CameraScreen: React.FC = () => {
 
     try {
       const response = await fetch(`/api/receipt/process`, {
+
         method: 'POST',
         body: formData,
       });
