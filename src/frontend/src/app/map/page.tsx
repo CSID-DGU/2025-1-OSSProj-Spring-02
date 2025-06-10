@@ -194,8 +194,14 @@ export default function MapPage() {
     <div className="flex flex-col min-h-screen bg-white w-full pb-24 overflow-x-hidden relative">
       <Script
         strategy="afterInteractive"
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&autoload=false&libraries=services`}
-        onLoad={() => window.kakao.maps.load(() => setLoaded(true))}
+        src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&autoload=false&libraries=services`}
+        onLoad={() => {
+          if (window.kakao && window.kakao.maps) {
+            window.kakao.maps.load(() => setLoaded(true));
+          } else {
+            console.error('Kakao Maps SDK failed to load');
+          }
+        }}
       />
 
       <div className="flex-grow w-full relative z-10 pt-0">
